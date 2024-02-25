@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Registration</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            background: linear-gradient(to right, #ff7e5f, #feb47b);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .form-container {
+            background: #fff;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .form-title {
+            text-align: center;
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+
+        /* Form fields */
+        .form-field {
+            margin-bottom: 20px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .form-label {
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 3px;
+            box-sizing: border-box;
+        }
+
+        /* Submit button */
+        .submit-btn {
+            width: 100%;
+            padding: 10px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 3px;
+            cursor: pointer;
+        }
+
+        .submit-btn:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <div class="form-container">
+        <h1 class="form-title">Registration Form</h1>
+        <form method="POST">
+            {{ form.hidden_tag() }}
+            <div class="form-field">
+                <label for="name" class="form-label">{{ form.name.label }}</label>
+                {{ form.name(class="form-input") }}
+            </div>
+            <div class="form-field">
+                <label for="username" class="form-label">{{ form.username.label }}</label>
+                {{ form.username(class="form-input") }}
+            </div>
+            <div class="form-field">
+                <label for="email" class="form-label">{{ form.email.label }}</label>
+                {{ form.email(class="form-input") }}
+            </div>
+            <div class="form-field">
+                <label for="mobile_number" class="form-label">{{ form.mobile_number.label }}</label>
+                {{ form.mobile_number(class="form-input") }}
+            </div>
+            <div class="form-field">
+                <label for="dob" class="form-label">{{ form.dob.label }}</label>
+                {{ form.dob(class="form-input") }}
+            </div>
+            <div class="form-field">
+                <label for="gender" class="form-label">{{ form.gender.label }}</label>
+                {{ form.gender(class="form-input") }}
+            </div>
+            <div class="form-field">
+                <label for="password" class="form-label">{{ form.password.label }}</label>
+                {{ form.password(class="form-input") }}
+            </div>
+            <div class="form-field">
+                <label for="confirm_password" class="form-label">{{ form.confirm_password.label }}</label>
+                {{ form.confirm_password(class="form-input") }}
+            </div>
+            <div class="form-field">
+                {{ form.csrf_token }}
+            </div>
+            <div class="form-field">
+                <input type="submit" class="submit-btn" value="Register">
+            </div>
+        </form>
+    </div>
+</body>
+</html>
