@@ -3,3 +3,6 @@ Flask-SQLAlchemy
 Flask-WTF
 email-validator
 flask-jwt-extended
+python-dotenv
+mysql-connector-python
+pymysql
