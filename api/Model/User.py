@@ -3,6 +3,11 @@ from api.connection import db
 from sqlalchemy.exc import IntegrityError
 from werkzeug.security import generate_password_hash, check_password_hash
 
+user_categories = db.Table('user_categories',
+                           db.Column('user_id', db.Integer, db.ForeignKey('user.id')),
+                           db.Column('category_id', db.Integer, db.ForeignKey('categories.id'))
+                           )
+
 
 class User(db.Model):
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
@@ -15,6 +20,9 @@ class User(db.Model):
     gender = db.Column(db.Enum('Male', 'Female', 'Other'), nullable=False)
     created_at = db.Column(db.DateTime, default=datetime.datetime.utcnow)
     updated_at = db.Column(db.DateTime, default=datetime.datetime.utcnow, onupdate=datetime.datetime.utcnow)
+
+    # Define relationship with categories
+    categories = db.relationship('Categories', secondary=user_categories, backref='users')
 
     def __repr__(self):
         return self.username
