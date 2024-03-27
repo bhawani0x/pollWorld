@@ -1,7 +1,7 @@
 from flask import Blueprint, request, render_template
 from flask.views import View
 # from api.Forms.signupForm import RegistrationForm
-from api.Model.User import User
+from api.Models.User import User
 import datetime
 from api.Helper.helper import response
 

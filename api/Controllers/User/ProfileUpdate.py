@@ -1,39 +1,41 @@
 from flask import Blueprint, request
 from flask.views import View
-from api.Model.User import User, user_categories, db
+from api.Models.User import User
 from api.Helper.helper import response
-from api.Model.Categories import Categories as CategoryModel
+from api.Decorators.verify_user import valid_jti_required, get_jwt_identity
 
 profileUpdate_bp = Blueprint("profileUpdate", __name__)
 
 
 class ProfileUpdate(View):
+    decorators = [valid_jti_required]
+
     def dispatch_request(self):
-        if request.method == "PUT":
-            data = request.get_json()
-            user_id = data.get('user_id')
-            categories = data.get('categories')
+        if request.method == 'GET':
+            return self.profile()
+        elif request.method == "PUT":
+            return self.update_profile()
 
-            if user_id and categories:
-                user = User.query.get(user_id)
-                if user:
-                    try:
-                        # Clear existing categories
-                        user.categories.clear()
-                        # Add new categories
-                        for category_id in categories:
-                            user.categories.append(CategoryModel.query.get(category_id))
+    def profile(self):
+        user = User().get_user_by_id(get_jwt_identity())
+        categories = []
+        for category in user.categories:
+            categories.append(category.topic)
+        return response({"user_data": {"name": user.name, "email": user.email, "username": user.username,
+                                       "dob": user.dob, "gender": user.gender, "category": categories}}, 200)
 
-                        # Commit changes
-                        db.session.commit()
-
-                        return response("Profile updated successfully", 200)
-                    except Exception as e:
-                        db.session.rollback()
-                        return response("Failed to update profile", 500)
-                else:
-                    return response("User not found", 404)
-            else:
-                return response("Invalid request data", 400)
+    def update_profile(self):
+        is_user_exists = User().get_user_by_id(get_jwt_identity())
+        if is_user_exists:
+            try:
+                if request.get_json().get('category'):
+                    categories = request.get_json().get('category')
+                    if not User().update_categories(is_user_exists, categories):
+                        return response("Profile not updated", 400)
+                    # if not is_user_exists.update_profile():
+                    #     return response("Profile not updated", 400)
+                    return response("Profile updated", 200)
+            except Exception as e:
+                return response("Failed to update profile", 500)
         else:
-            return response("Method not allowed", 405)
+            return response("User not found", 404)

@@ -1,4 +1,4 @@
-from api.Model.Categories import Categories
+from api.Models.Categories import Categories
 from flask import Blueprint, request
 from flask.views import View
 from api.Helper.helper import response
